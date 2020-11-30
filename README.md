@@ -57,3 +57,50 @@ Projects need to be approved prior to launching into them, so take some time to 
 # in config/environment.rb add this line:
 ActiveRecord::Base.logger = nil
 ```
+
+
+Phase 1 Project Proposal: Oumaima and Blaire
+
+Name of App :  Amazon Holiday Gift Selector
+
+Blurb : App offers Gift recommendations to Users based on price, age range, gender, etc.
+User can then choose to add these Gift items to their Wish_List. Users can also purchase
+from the Wish_List. 
+
+Models:
+
+Gifts has_many Users through Wish_List
+Wish_List (joiner) - Wish_List belongs_to User
+Wish_List has_many Gifts
+Users has_many Gifts through Wish_List
+
+
+User stories:
+
+As a User, I want to receive recommendations for Gifts.
+As a User, I want to be able to create a Wish_List. 
+As a User, I want to be able to add and remove Gifts from the Wish_List.
+As a User, I want to purchase items on my Wish_List. 
+
+## Models: Gift < Purchase > Buyer
+
+### Gift 
+* has_many :buyers
+* through :purchase
+
+### Purchase
+  belongs_to :gift
+  belongs_to :buyer
+
+### Buyer
+* has_many :gift
+* through :purchase
+
+## Gift > Wish_List
+
+### Gift
+* belongs_to :wish_list
+
+### Wish_List
+* has_many :gift
+
