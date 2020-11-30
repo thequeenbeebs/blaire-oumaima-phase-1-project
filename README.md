@@ -77,30 +77,33 @@ Users has_many Gifts through Wish_List
 
 User stories:
 
-As a User, I want to receive recommendations for Gifts.
-As a User, I want to be able to create a Wish_List. 
-As a User, I want to be able to add and remove Gifts from the Wish_List.
-As a User, I want to purchase items on my Wish_List. 
+As a User, I want to receive recommendations for Gifts. #STRETCH
+As a User, I want to be able to create a List. #CORE
+As a User, I want to be able to add and remove Gifts from the List. #CORE
+As a User, I want to purchase items on my List. #CORE
 
-## Models: Gift < Purchase > Buyer
+Send List to another user? #STRETCH
+
+
+## Models: Gift < Purchase > List
 
 ### Gift 
-* has_many :buyers
-* through :purchase
+* has many :add_to_list
+* has_many :list through :add_to_list
 
-### Purchase
+### Add_To_List
   belongs_to :gift
-  belongs_to :buyer
+  belongs_to :list
 
-### Buyer
-* has_many :gift
-* through :purchase
+### List
+* has_many :add_to_list
+* has_many :gift through :add_to_list
 
-## Gift > Wish_List
+## List > User
 
-### Gift
-* belongs_to :wish_list
+### List
+* belongs_to :user
 
-### Wish_List
-* has_many :gift
+### User
+* has_many :list
 
