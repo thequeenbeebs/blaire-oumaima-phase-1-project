@@ -5,10 +5,10 @@ List.delete_all
 Gift.delete_all
 AddLists.delete_all 
 
-user1 = User.create(username: oliviabas)
-user2 = User.create(username: shaylynn)
-user3 = User.create(username: jameslogan)
-user4 = User.create(username: sarahstone)
+oliviabas = User.create(username: oliviabas)
+shaylynn = User.create(username: shaylynn)
+jameslogan = User.create(username: jameslogan)
+sarahstone = User.create(username: sarahstone)
 user5 = User.create(username: johnstewert)
 user6 = User.create(username: ronconnor)
 user7 = User.create(username: marysmith)
