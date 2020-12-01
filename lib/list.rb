@@ -15,10 +15,5 @@ class List < ActiveRecord::Base
         puts "1. Add A Gift"
         puts "2. Edit Gift"
         puts "3. Delete List"
-        #lists all gifts
-        #add gift
-        #edit gift 
-        #view total price
-        #delete list
     end
 end
