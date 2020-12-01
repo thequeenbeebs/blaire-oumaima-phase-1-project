@@ -1,31 +1,33 @@
-require_relative ../config/environment 
+require_relative '../config/environment'
 
 User.delete_all
 List.delete_all 
 Gift.delete_all
-AddLists.delete_all 
+AddToList.delete_all 
 
-oliviabas = User.create(username: oliviabas)
-shaylynn = User.create(username: shaylynn)
-jameslogan = User.create(username: jameslogan)
-sarahstone = User.create(username: sarahstone)
-user5 = User.create(username: johnstewert)
-user6 = User.create(username: ronconnor)
-user7 = User.create(username: marysmith)
+oliviabas = User.create(username: "oliviabas")
+shaylynn = User.create(username: "shaylynn")
+jameslogan = User.create(username: "jameslogan")
+sarahstone = User.create(username: "sarahstone")
+user5 = User.create(username: "johnstewert")
+user6 = User.create(username: "ronconnor")
+user7 = User.create(username: "marysmith")
 
 
-list1 = List.create(name: "my christmas", type: "wishlist", user_id)
-list2 = List.create(name: "things to get", type: "shopping list", user_id)
+list1 = List.create(name: "my christmas", shopping_or_wish: "wishlist", user_id: user5.id)
+list2 = List.create(name: "things to get", shopping_or_wish: "shopping list", user_id: user6.id)
 
 gift1 = Gift.create(name: "Apple Watch", price: 399.99, inventory: 2000)
-gift2 = Gift.create(name: "Cashmere Scarf", price: 124,89, inventory: 12)
+gift2 = Gift.create(name: "Cashmere Scarf", price: 124.89, inventory: 12)
 gift3 = Gift.create(name: "Nike Running Shoes", price: 189.99, inventory: 400)
 gift4 = Gift.create(name: "PS5", price: 500.00, inventory: 6 )
-gift5 = Gift.create(name: "Ugg Slippers" price: 79.95, inventory: 834)
+gift5 = Gift.create(name: "Ugg Slippers", price: 79.95, inventory: 834)
 gift6 = Gift.create(name: "Birthstone Necklace", price: 42.00, inventory: 485)
 gift7 = Gift.create(name: "Le Labo Eau de Parfum", price: 192, inventory: 336)
 gift8 = Gift.create(name: "L.L Bean Beanie", price: 16.96, inventory: 2448)
 gift9 = Gift.create(name: "16 Piece Dinner Set", price: 256.00, inventory: 33)
 gift10 = Gift.create(name: "Bose Soundlink Speaker", price: 99.00, inventory: 3737)
+
+puts "seed file ran"
 
 
