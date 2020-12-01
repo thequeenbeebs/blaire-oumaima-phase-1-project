@@ -50,11 +50,6 @@ class CLI
 end 
 
 
-#add gift method 
-    #ask for name of gift 
-    #ask for price of gift
-    #ask for quantity of gift 
-
 #remove gift method 
     #option to remove gift
     
