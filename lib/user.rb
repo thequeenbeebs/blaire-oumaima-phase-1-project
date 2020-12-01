@@ -15,17 +15,26 @@ class User < ActiveRecord::Base
 
     def view_lists
         puts "#{self.username}'s Lists"
-        # all_lists = List.where("user_id == ?", self.id)
-        if self.lists.length == 0
+        all_lists = List.where("user_id == ?", self.id)
+        if self.list.length == 0
             puts "You haven't created any lists yet!"
-            self.profile_page
+            puts "Would you like to create one? y/n"
+            response = gets.chomp
+            if response == "y"
+                self.create_list
+            elsif response == "n"
+                self.profile_page
+            end
         else
             puts "Which list would you like to view?"
-            self.lists #way to output name of all lists
+            self.list.each do |list|
+                puts list.name
+            end 
+            input = gets.chomp
+            list = List.find_by(name: input)
+            list.homepage
         end
-        input = gets.chomp
-        list = List.find_by(name: input)
-        list.homepage
+        
     end
 
     def create_list
