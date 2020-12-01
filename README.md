@@ -1,3 +1,10 @@
+# To Do List!
+* create seed data
+* develop methods that answer questions about the data
+* continue learning about scraping/APIs
+* figure out how CLI works
+
+
 # Module One Final Project Guidelines
 
 Congratulations, you're at the end of module one! You've worked crazy hard to get here and have learned a ton.
@@ -23,15 +30,6 @@ For your final project, we'll be building a Command Line database application.
 2. You should have a minimum of three models.
 3. You should build out a CLI to give your user full CRUD ability for at least one of your resources. For example, build out a command line To-Do list. A user should be able to create a new to-do, see all todos, update a todo item, and delete a todo. Todos can be grouped into categories, so that a to-do has many categories and categories have many to-dos.
 4. Use good OO design patterns. You should have separate classes for your models and CLI interface.
-
-### Brainstorming and Proposing a Project Idea
-
-Projects need to be approved prior to launching into them, so take some time to brainstorm project options that will fulfill the requirements above.  You must have a minimum of four [user stories](https://en.wikipedia.org/wiki/User_story) to help explain how a user will interact with your app.  A user story should follow the general structure of `"As a <role>, I want <goal/desire> so that <benefit>"`. For example, if we were creating an app to randomly choose nearby restaurants on Yelp, we might write:
-
-* As a user, I want to be able to enter my name to retrieve my records
-* As a user, I want to enter a location and be given a random nearby restaurant suggestion
-* As a user, I should be able to reject a suggestion and not see that restaurant suggestion again
-* As a user, I want to be able to save to and retrieve a list of favorite restaurant suggestions
 
 ## Instructions
 
@@ -66,14 +64,6 @@ Name of App :  Amazon Holiday Gift Selector
 Blurb : App offers Gift recommendations to Users based on price, age range, gender, etc.
 User can then choose to add these Gift items to their Wish_List. Users can also purchase
 from the Wish_List. 
-
-Models:
-
-Gifts has_many Users through Wish_List
-Wish_List (joiner) - Wish_List belongs_to User
-Wish_List has_many Gifts
-Users has_many Gifts through Wish_List
-
 
 User stories:
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 4) do
+ActiveRecord::Schema.define(version: 5) do
 
   create_table "add_to_lists", force: :cascade do |t|
     t.integer "gift_id"
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 4) do
 
   create_table "lists", force: :cascade do |t|
     t.string "name"
-    t.string "type"
+    t.string "shopping_or_wish"
     t.integer "user_id"
   end
 

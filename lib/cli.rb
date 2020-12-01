@@ -17,42 +17,31 @@ class CLI
         puts "Sign in here!"
         puts "Whats your username?"
         username = gets.chomp 
-        account = User.find_by(username: username)
-        if account == nil 
+        user = User.find_by(username: username)
+        if user == nil 
             puts "This account does not exist"
-        else #else pull up profile of user 
+        else 
+            user.profile_page
+        end
     end 
 
     def self.signup 
         puts "Create an account here!"
         puts "What would you like your username to be?"
         username = gets.chomp
-        account = User.find_by(username: username)
-        if account == nil
-            #create new user instance 
+        user = User.find_by(username: username)
+        if user == nil
+            user = User.create(username: username)
+            user.profile_page
+        else
+            puts "This username already exists. Please choose a different username!"
+        end
+    end
         
 
 
 end 
 
-
-
-#profile page 
-#offer welcome message 
-#create/ or view a list 
-
-#create list method 
-    #ask for a list name 
-    #ask what type of list (wish or shopping list)
-    #returns add a gift method 
-
-#view list method 
-    #show all lists available to that user
-        #then user will select which list to view 
-    #show list of gifts that have been added so far 
-    #give options to add or remove gift options 
-    #give options to view total cost of all gifts on said list 
-    #option to delete the list 
 
 #add gift method 
     #ask for name of gift 
