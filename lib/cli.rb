@@ -1,9 +1,11 @@
 require "pry" 
+require 'colorize'
+
 class CLI 
 
     def self.run
-        puts "Welcome to our badass APP!"
-        puts "What would you like to do?"
+        puts "Welcome to our badass APP!".bold.red
+        puts "What would you like to do?".italic.blue
         puts "1. Sign in or 2. Sign up"
         input = gets.chomp 
         if input == "1" 
