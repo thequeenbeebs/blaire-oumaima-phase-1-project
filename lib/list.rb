@@ -21,7 +21,7 @@ class List < ActiveRecord::Base
         elsif input == "2"
             #edit gift method
         elsif input == "3"
-            #delete list method
+            self.delete_list
         end
     end
 
@@ -46,6 +46,18 @@ class List < ActiveRecord::Base
         new_gift = Gift.create(name: input_1, price: input_2, quantity: input_3)
         AddToList.create(gift_id: new_gift.id, list_id: self.id)
         self.homepage
+    end
+
+    def delete_list
+        puts "Are you sure you want to delete this list? y/n"
+        input = gets.chomp
+        if input == "y"
+            self.delete
+            puts "This list has been deleted"
+            self.homepage
+        elsif input == "n"
+            self.homepage
+        end
     end
 
 
