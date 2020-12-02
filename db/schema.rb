@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_01_220556) do
+ActiveRecord::Schema.define(version: 2020_12_02_160652) do
 
   create_table "add_to_lists", force: :cascade do |t|
     t.integer "gift_id"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 2020_12_01_220556) do
     t.string "name"
     t.float "price"
     t.integer "quantity"
+    t.string "status"
   end
 
   create_table "lists", force: :cascade do |t|

@@ -33,7 +33,7 @@ class List < ActiveRecord::Base
         input_2 = gets.chomp.to_f 
         puts "Quantity:"
         input_3 = gets.chomp.to_i 
-        new_gift = Gift.create(name: input_1, price: input_2, quantity: input_3)
+        new_gift = Gift.create(name: input_1, price: input_2, quantity: input_3, status: "Not Purchased")
         AddToList.create(gift_id: new_gift.id, list_id: self.id)
         self.homepage
     end
