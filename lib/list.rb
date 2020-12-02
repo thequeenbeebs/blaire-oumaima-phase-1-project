@@ -42,9 +42,9 @@ class List < ActiveRecord::Base
         puts "Are you sure you want to delete this list? y/n"
         input = gets.chomp
         if input == "y"
-            self.delete
+            self.destroy
             puts "This list has been deleted"
-            self.homepage
+            self.user.profile_page
         elsif input == "n"
             self.homepage
         end

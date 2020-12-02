@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
         puts "#{self.username}'s Lists"
         all_lists = List.where("user_id == ?", self.id)
         if self.list.length == 0
-            puts "You haven't created any lists yet!"
+            puts "You haven't created any lists!"
             puts "Would you like to create one? y/n"
             response = gets.chomp
             if response == "y"
