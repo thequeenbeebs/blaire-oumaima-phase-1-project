@@ -9,6 +9,30 @@ class Gift < ActiveRecord::Base
         puts "3. Change Quantity"
         puts "4. Change Status"
         puts "5. Delete Gift"
-        #need to take in input and create methods for each option
+        input = gets.chomp
+        if input == "1"
+            self.change_name
+        elsif input == "2"
+            #change price method
+        elsif input == "3"
+            #change quantity method
+        elsif input == "4"
+            #change status method
+        elsif input == "5"
+            #delete gift method
+        end
     end
+
+    def change_name
+        puts "What would you like to change the item's name to?"
+        input = gets.chomp
+        self.name = input
+        self.list.homepage
+    end
+
+
+
+
+
+
 end
