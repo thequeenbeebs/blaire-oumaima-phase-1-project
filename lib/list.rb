@@ -5,7 +5,7 @@ class List < ActiveRecord::Base
 
     def homepage
         puts self.name
-        self.all_gifts.each do |gift|
+        self.gift.each do |gift|
             puts "Name: #{gift.name}"
             puts "Price: $#{gift.price}"
             puts "Quantity: #{gift.quantity}"
@@ -25,22 +25,12 @@ class List < ActiveRecord::Base
         end
     end
 
-    def all_gifts
-        gift_ids = []
-        AddToList.all.each do |i|
-            if i.list_id == self
-                gift_ids << i.gift_id
-            end 
-        end
-        #find the gifts that coordinate with those ids
-    end
-
     def add_gift
         puts "Add A Gift"
         puts "Name:"
         input_1 = gets.chomp
         puts "Price:"
-        input_2 = gets.chomp.to_f
+        input_2 = gets.chomp.to_f #figure out how to convert to two decimal places
         puts "Quantity:"
         input_3 = gets.chomp.to_i 
         new_gift = Gift.create(name: input_1, price: input_2, quantity: input_3)
