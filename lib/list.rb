@@ -7,7 +7,7 @@ class List < ActiveRecord::Base
         puts self.name
         self.gift.each do |gift|
             puts "Name: #{gift.name}"
-            puts "Price: $#{gift.price}"
+            puts "Price: $#{sprintf "%.2f", gift.price}"
             puts "Quantity: #{gift.quantity}"
         end
         total = self.gift.sum {|gift| gift.price }
@@ -19,7 +19,7 @@ class List < ActiveRecord::Base
         if input == "1"
             self.add_gift
         elsif input == "2"
-            #edit gift method
+            self.edit_gift_selector
         elsif input == "3"
             self.delete_list
         end
@@ -30,12 +30,22 @@ class List < ActiveRecord::Base
         puts "Name:"
         input_1 = gets.chomp
         puts "Price:"
-        input_2 = gets.chomp.to_f #figure out how to convert to two decimal places
+        input_2 = gets.chomp.to_f 
         puts "Quantity:"
         input_3 = gets.chomp.to_i 
         new_gift = Gift.create(name: input_1, price: input_2, quantity: input_3)
         AddToList.create(gift_id: new_gift.id, list_id: self.id)
         self.homepage
+    end
+
+    def edit_gift_selector
+        puts "Which item would you like to edit?"
+        self.gift.each do |gift|
+            puts gift.name
+        end
+        input = gets.chomp
+        gift = Gift.find_by(name: input)
+        gift.edit
     end
 
     def delete_list
