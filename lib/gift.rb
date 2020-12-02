@@ -19,7 +19,7 @@ class Gift < ActiveRecord::Base
         elsif input == "4"
             self.change_status
         elsif input == "5"
-            #delete gift method
+            self.delete_gift
         end
     end
 
@@ -49,6 +49,18 @@ class Gift < ActiveRecord::Base
         input = gets.chomp
         if input == "y"
             self.status = "Purchased"
+            self.list.homepage
+        elsif input == "n"
+            self.edit
+        end
+    end
+
+    def delete_gift
+        puts "Are you sure you want to delete this gift? y/n"
+        input = gets.chomp
+        if input == "y"
+            self.destroy
+            puts "This gift has been deleted."
             self.list.homepage
         elsif input == "n"
             self.edit
