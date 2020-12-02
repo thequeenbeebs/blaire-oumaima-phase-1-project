@@ -6,14 +6,19 @@ class List < ActiveRecord::Base
     def homepage
         puts self.name
         self.gift.each do |gift|
+            puts
             puts "Name: #{gift.name}"
             puts "Price: $#{sprintf "%.2f", gift.price}"
             puts "Quantity: #{gift.quantity}"
+            puts "Status: #{gift.status}"
         end
         total = self.gift.sum {|gift| gift.price }
-        puts "Total Cost: $#{total}"
+        puts
+        puts "Total Cost: $#{sprintf "%.2f", total}"
+        puts
         puts "1. Add A Gift"
         puts "2. Edit Gift"
+        #share list
         puts "3. Delete List"
         input = gets.chomp
         if input == "1"
@@ -27,6 +32,7 @@ class List < ActiveRecord::Base
 
     def add_gift
         puts "Add A Gift"
+        puts
         puts "Name:"
         input_1 = gets.chomp
         puts "Price:"
@@ -41,6 +47,7 @@ class List < ActiveRecord::Base
     def edit_gift_selector
         puts "Which item would you like to edit?"
         self.gift.each do |gift|
+            puts
             puts gift.name
         end
         input = gets.chomp
@@ -48,11 +55,20 @@ class List < ActiveRecord::Base
         gift.edit
     end
 
+    # def share_list
+    #     puts "Who would you like to share this list with?"
+    #     input = gets.chomp
+    #     friend = User.find_by(name: input)
+    #     FriendsList.create(user_id: friend.id, friend: self.user.name, name: self.name, shopping_or_wish: self.shopping_or_wish how do i add the gifts though?)
+    #     puts "We have shared your list with #{friend.name}"
+    # end
+
     def delete_list
         puts "Are you sure you want to delete this list? y/n"
         input = gets.chomp
         if input == "y"
             self.destroy
+            self.gift.destroy
             puts "This list has been deleted"
             self.user.profile_page
         elsif input == "n"

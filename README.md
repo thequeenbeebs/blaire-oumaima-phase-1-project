@@ -1,9 +1,7 @@
-# To Do List!
-* create seed data
-* develop methods that answer questions about the data
-* continue learning about scraping/APIs
-* figure out how CLI works
-
+# To Do List
+* create some sort of exit screen?
+* formatting
+* waiting to hear back from eBay API registration
 
 # Module One Final Project Guidelines
 

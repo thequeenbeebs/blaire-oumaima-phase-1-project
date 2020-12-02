@@ -4,6 +4,7 @@ class Gift < ActiveRecord::Base
 
     def edit
         puts "What would you like to change?"
+        puts 
         puts "1. Change Name"
         puts "2. Change Price"
         puts "3. Change Quantity"
@@ -67,7 +68,11 @@ class Gift < ActiveRecord::Base
         end
     end
 
-
+    def status
+        if self.status == nil
+            self.status = "Not Purchased"
+        end
+    end
 
 
 end

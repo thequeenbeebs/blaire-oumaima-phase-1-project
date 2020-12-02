@@ -52,11 +52,3 @@ class CLI
 end 
 
 
-#remove gift method 
-    #option to remove gift
-    
-
-#edit gift method 
-    #allow user to know if gift has been purchased 
-    #update price
-    #update quantity 
