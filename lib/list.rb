@@ -6,7 +6,7 @@ class List < ActiveRecord::Base
     def homepage
         puts
         puts self.name.bold
-        puts self.shopping_or_wish.italic
+        puts "#{self.shopping_or_wish} List".italic
         self.gift.each do |gift|
             puts
             puts "Name: #{gift.name}"
@@ -52,15 +52,28 @@ class List < ActiveRecord::Base
     end
 
     def edit_gift_selector
-        puts
         prompt = TTY::Prompt.new
-        input = prompt.select("Which item would you like to edit?") do |option|
-            self.gift.each do |gift|
-                option.choice gift.name
+        puts
+        if self.gift.length == 0
+            puts "You don't have any gifts yet!"
+            input = prompt.select("Would you like to add one?") do |option|
+                option.choice "Yes"
+                option.choice "No"
             end
+            if input == "Yes"
+                self.add_gift
+            elsif input == "No"
+                self.homepage
+            end
+        else    
+            input = prompt.select("Which item would you like to edit?") do |option|
+                self.gift.each do |gift|
+                    option.choice gift.name
+                end
+            end
+            gift = Gift.find_by(name: input)
+            self.edit_gift_menu(gift)
         end
-        gift = Gift.find_by(name: input)
-        self.edit_gift_menu(gift)
     end
 
     def edit_gift_menu(gift)
