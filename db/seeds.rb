@@ -14,8 +14,8 @@ ronconnor = User.create(username: "ronconnor")
 marysmith = User.create(username: "marysmith")
 
 
-list1 = List.create(name: "my christmas", shopping_or_wish: "wishlist", user_id: user5.id)
-list2 = List.create(name: "things to get", shopping_or_wish: "shopping list", user_id: user6.id)
+list1 = List.create(name: "my christmas", shopping_or_wish: "wishlist", user_id: shaylynn.id)
+list2 = List.create(name: "things to get", shopping_or_wish: "shopping list", user_id: sarahstone.id)
 
 gift1 = Gift.create(name: "Apple Watch", price: 399.99, status: "Not Purchased")
 gift2 = Gift.create(name: "Cashmere Scarf", price: 124.89, status: "Purchased")

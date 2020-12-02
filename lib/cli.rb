@@ -15,12 +15,15 @@ class CLI
         input = prompt.select("Lets get started!") do |option|
             option.choice "Sign In"
             option.choice "Create New Account"
+            option.choice "Exit"
         end 
 
         if input == "Sign In"
             self.sign_in
         elsif input == "Create New Account"
             self.sign_up
+        elsif input == "Exit"
+            exit
         end
     end
 
