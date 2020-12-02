@@ -17,7 +17,7 @@ class Gift < ActiveRecord::Base
         elsif input == "3"
             self.change_quantity
         elsif input == "4"
-            #change status method
+            self.change_status
         elsif input == "5"
             #delete gift method
         end
@@ -42,6 +42,17 @@ class Gift < ActiveRecord::Base
         input = gets.chomp
         self.quantity = input.to_i 
         self.list.homepage
+    end
+
+    def change_status
+        puts "Did you purchase this item? y/n"
+        input = gets.chomp
+        if input == "y"
+            self.status = "Purchased"
+            self.list.homepage
+        elsif input == "n"
+            self.edit
+        end
     end
 
 
