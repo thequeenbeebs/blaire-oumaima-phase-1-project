@@ -1,62 +1,117 @@
-require "pry" 
+require "pry"
 require 'colorize'
+require "tty-prompt"
 
-class CLI 
+
+
+class CLI
 
     def self.run
-        puts "Welcome to our badass APP!".bold.red
-        puts "What would you like to do?".italic.blue
-        puts "1. Sign in or 2. Sign up"
-        input = gets.chomp 
-        if input == "1" 
-            self.sign_in
-        elsif input == "2" 
-            self.sign_up
+        prompt = TTY::Prompt.new
+        puts self.greeting
+        puts 
+        puts "                           the holidays just got a bit easier.                                    ".red
+        puts
+        input = prompt.select("Lets get started!") do |option|
+            option.choice "Sign In"
+            option.choice "Create New Account"
         end 
-    end 
+
+        if input == "Sign In"
+            self.sign_in
+        elsif input == "Create New Account"
+            self.sign_up
+        end
+    end
 
     def self.sign_in
-        puts "Sign in here!"
-        puts "Whats your username?"
-        username = gets.chomp 
+        prompt = TTY::Prompt.new
+        puts 
+        puts "Welcome Back!".bold.red
+        puts 
+        puts "Whats your username?".italic.white
+        username = gets.chomp
         user = User.find_by(username: username)
-        if user == nil 
-            puts "This account does not exist!" 
-            puts "Would you like to create one? y/n"
-            response = gets.chomp
-            if response == "y"
+        if user == nil
+            puts 
+            puts "This account does not exist.".bold.white
+            puts
+            response = input = prompt.select("Create An Account".red) do |option|
+                option.choice "Yes"
+                option.choice "No"
+            if response == "Yes"
                 self.sign_up
-            elsif response == "n"
+            elsif response == "No"
                 self.run
+            end 
             end
-        else 
+        else
             user.profile_page
         end
-    end 
+    end
 
-    def self.sign_up 
-        puts "Create an account here!"
-        puts "What would you like your username to be?"
+    def self.sign_up
+        puts "Create An Account Here!".red
+        puts
+        puts "What would you like your username to be?".italic.white
         username = gets.chomp
         user = User.find_by(username: username)
         if user == nil
             user = User.create(username: username)
             user.profile_page
         else
-            puts "This username already exists. Please choose a different username!"
+            puts "This username already exists. Please choose a different username.".bold.yellow
         end
     end
-        
 
 
+
+    def self.greeting
+    puts  "                      ______________________   ________    _______  ________                " 
+    puts "                     / ____/  _/ ____/_  __/  / ____/ /   / __ \/ / / / __ \               "
+    puts "                    / / __ / // /_    / /    / /   / /   / / // / / / / / /               "
+    puts "                   / /_/ // // __/   / /    / /___/ /___/ /_// /_/ / /_/ /                "
+    puts "                    \____/___/_/     /_/    \  ____/_____/\____/\_____/_____/                 "  
+                                                          
+ 
+    end 
 end 
 
 
-#remove gift method 
-    #option to remove gift
-    
 
-#edit gift method 
-    #allow user to know if gift has been purchased 
+
+
+                                          
+
+
+                
+ 
+
+
+
+                                                                                                        
+
+
+                                                                                                        
+
+
+      
+ 
+
+
+
+                                                                                                        
+
+                                                                                                          
+                                                               
+
+
+
+#remove gift method
+    #option to remove gift
+
+
+#edit gift method
+    #allow user to know if gift has been purchased
     #update price
-    #update quantity 
+    #update quantity

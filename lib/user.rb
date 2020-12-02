@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
     has_many :list
 
     def profile_page
-        puts "#{self.username}'s Profile Page"
+        puts "#{self.username}'s Profile"
         puts "1. View My Lists"
         puts "2. Create A List"
         input = gets.chomp
