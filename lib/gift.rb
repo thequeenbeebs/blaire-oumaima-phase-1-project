@@ -13,7 +13,7 @@ class Gift < ActiveRecord::Base
         if input == "1"
             self.change_name
         elsif input == "2"
-            #change price method
+            self.change_price
         elsif input == "3"
             #change quantity method
         elsif input == "4"
@@ -27,6 +27,13 @@ class Gift < ActiveRecord::Base
         puts "What would you like to change the item's name to?"
         input = gets.chomp
         self.name = input
+        self.list.homepage
+    end
+
+    def change_price
+        puts "What would you like to change the item's price to?"
+        input = gets.chomp
+        self.price = input
         self.list.homepage
     end
 
