@@ -12,7 +12,7 @@ class CLI
         puts 
         puts "                           the holidays just got a bit easier.                                    ".red
         puts
-        input = prompt.select("Lets get started!") do |option|
+        input = prompt.select("Let's get started!") do |option|
             option.choice "Sign In"
             option.choice "Create New Account"
             option.choice "Exit"
@@ -32,28 +32,29 @@ class CLI
         puts 
         puts "Welcome Back!".bold.red
         puts 
-        puts "Whats your username?".italic.white
+        puts "What's your username?".italic.white
         username = gets.chomp
         user = User.find_by(username: username)
         if user == nil
             puts 
             puts "This account does not exist.".bold.white
             puts
-            response = input = prompt.select("Create An Account".red) do |option|
+            response = prompt.select("Create an account?".red) do |option|
                 option.choice "Yes"
                 option.choice "No"
+            end
             if response == "Yes"
                 self.sign_up
             elsif response == "No"
                 self.run
             end 
-            end
         else
             user.profile_page
         end
     end
 
     def self.sign_up
+        puts
         puts "Create An Account Here!".red
         puts
         puts "What would you like your username to be?".italic.white

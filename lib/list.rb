@@ -5,7 +5,8 @@ class List < ActiveRecord::Base
 
     def homepage
         puts
-        puts self.name
+        puts self.name.bold
+        puts self.shopping_or_wish.italic
         self.gift.each do |gift|
             puts
             puts "Name: #{gift.name}"
