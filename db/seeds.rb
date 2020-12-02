@@ -9,9 +9,9 @@ oliviabas = User.create(username: "oliviabas")
 shaylynn = User.create(username: "shaylynn")
 jameslogan = User.create(username: "jameslogan")
 sarahstone = User.create(username: "sarahstone")
-user5 = User.create(username: "johnstewert")
-user6 = User.create(username: "ronconnor")
-user7 = User.create(username: "marysmith")
+johnstewert = User.create(username: "johnstewert")
+ronconnor = User.create(username: "ronconnor")
+marysmith = User.create(username: "marysmith")
 
 
 list1 = List.create(name: "my christmas", shopping_or_wish: "wishlist", user_id: user5.id)
