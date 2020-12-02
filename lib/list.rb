@@ -36,6 +36,7 @@ class List < ActiveRecord::Base
     end
 
     def add_gift
+        puts
         puts "Add A Gift"
         puts
         puts "Name:"
@@ -50,6 +51,7 @@ class List < ActiveRecord::Base
     end
 
     def edit_gift_selector
+        puts
         prompt = TTY::Prompt.new
         input = prompt.select("Which item would you like to edit?") do |option|
             self.gift.each do |gift|
@@ -57,7 +59,30 @@ class List < ActiveRecord::Base
             end
         end
         gift = Gift.find_by(name: input)
-        gift.edit
+        self.edit_gift_menu(gift)
+    end
+
+    def edit_gift_menu(gift)
+        prompt = TTY::Prompt.new
+        puts
+        input = prompt.select("What would you like to change?") do |option|
+            option.choice "Change Name"
+            option.choice "Change Price"
+            option.choice "Change Quantity"
+            option.choice "Change Status"
+            option.choice "Delete Gift"
+        end
+        if input == "Change Name"
+            gift.change_name
+        elsif input == "Change Price"
+            gift.change_price
+        elsif input == "Change Quantity"
+            gift.change_quantity
+        elsif input == "Change Status"
+            gift.change_status
+        elsif input == "Delete Gift"
+            self.delete_gift(gift)
+        end
     end
 
     # def share_list
@@ -69,6 +94,7 @@ class List < ActiveRecord::Base
     # end
 
     def delete_list
+        puts
         prompt = TTY::Prompt.new
         input = prompt.select("Are you sure you want to delete this list?") do |option|
             option.choice "Yes"
@@ -83,6 +109,26 @@ class List < ActiveRecord::Base
             self.user.profile_page
         elsif input == "No"
             self.homepage
+        end
+    end
+
+    def delete_gift(gift)
+        prompt = TTY::Prompt.new
+        input = prompt.select("Are you sure you want to delete this gift?") do |option|
+            option.choice "Yes"
+            option.choice "No"
+        end
+        if input == "Yes"
+            joiner = AddToList.find_by(list_id: self.id, gift_id: gift.id)
+            joiner.destroy
+            gift.destroy
+            puts
+            puts "This gift has been deleted."
+            puts
+            self.homepage
+        elsif input == "No"
+            puts
+            gift.edit
         end
     end
 
