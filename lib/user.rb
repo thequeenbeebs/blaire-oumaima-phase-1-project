@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
             option.choice "View My Lists"
             option.choice "Create A List"
             option.choice "Back to Home"
+            option.choice "Exit"
         end
         if input == "View My Lists"
             self.view_lists
@@ -15,6 +16,8 @@ class User < ActiveRecord::Base
             self.create_list
         elsif input == "Back to Home"
             CLI.run
+        elsif input == "Exit"
+            exit 
         end
     end
 
@@ -28,7 +31,7 @@ class User < ActiveRecord::Base
                 end 
             end
             list = List.find_by(name: input)
-            list.homepage
+            self.list_homepage(list)
         else 
             puts
             puts "#{self.username}'s Lists"
@@ -55,7 +58,40 @@ class User < ActiveRecord::Base
             option.choice "Wish"
         end
         new_list = List.create(name: name, shopping_or_wish: type, user_id: self.id)
-        new_list.homepage
+        self.list_homepage(new_list)
+    end
+
+    def list_homepage(list)
+        puts
+        puts list.name.bold
+        puts "#{list.shopping_or_wish} List".italic
+        list.gift.each do |gift|
+            puts
+            puts "Name: #{gift.name}"
+            puts "Price: $#{sprintf "%.2f", gift.price}"
+            puts "Quantity: #{gift.quantity}"
+            puts "Status: #{gift.status}"
+        end
+        total = list.gift.sum {|gift| gift.price }
+        puts
+        puts "Total Cost: $#{sprintf "%.2f", total}"
+        prompt = TTY::Prompt.new
+        input =prompt.select("") do |option|
+            option.choice "Add A Gift"
+            option.choice "Edit Gift"
+            option.choice "Delete List"
+            option.choice "Back to Profile Page"
+            #share list?
+        end
+        if input == "Add A Gift"
+            list.add_gift
+        elsif input == "Edit Gift"
+            list.edit_gift_selector
+        elsif input == "Delete List"
+            list.delete_list
+        elsif input == "Back to Profile Page"
+            self.profile_page
+        end
     end
 
     #def friend_list

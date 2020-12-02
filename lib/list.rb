@@ -3,39 +3,6 @@ class List < ActiveRecord::Base
     has_many :gift, through: :add_to_list
     belongs_to :user
 
-    def homepage
-        puts
-        puts self.name.bold
-        puts "#{self.shopping_or_wish} List".italic
-        self.gift.each do |gift|
-            puts
-            puts "Name: #{gift.name}"
-            puts "Price: $#{sprintf "%.2f", gift.price}"
-            puts "Quantity: #{gift.quantity}"
-            puts "Status: #{gift.status}"
-        end
-        total = self.gift.sum {|gift| gift.price }
-        puts
-        puts "Total Cost: $#{sprintf "%.2f", total}"
-        prompt = TTY::Prompt.new
-        input =prompt.select("") do |option|
-            option.choice "Add A Gift"
-            option.choice "Edit Gift"
-            option.choice "Delete List"
-            option.choice "Back to Profile Page"
-            #share list?
-        end
-        if input == "Add A Gift"
-            self.add_gift
-        elsif input == "Edit Gift"
-            self.edit_gift_selector
-        elsif input == "Delete List"
-            self.delete_list
-        elsif input == "Back to Profile Page"
-            self.user.profile_page
-        end
-    end
-
     def add_gift
         puts
         puts "Add A Gift"
@@ -48,7 +15,17 @@ class List < ActiveRecord::Base
         input_3 = gets.chomp.to_i 
         new_gift = Gift.create(name: input_1, price: input_2, quantity: input_3, status: "Not Purchased")
         AddToList.create(gift_id: new_gift.id, list_id: self.id)
-        self.homepage
+        puts
+        prompt = TTY::Prompt.new
+        input = prompt.select("Your gift has been added!") do |option|
+            option.choice "Back to List"
+            option.choice "Back to Profile Page"
+        end
+        if input == "Back to List"
+            self.user.list_homepage(self)
+        elsif input == "Back to Profile Page"
+            self.user.profile_page
+        end
     end
 
     def edit_gift_selector
@@ -63,7 +40,7 @@ class List < ActiveRecord::Base
             if input == "Yes"
                 self.add_gift
             elsif input == "No"
-                self.homepage
+                self.user.list_homepage(self)
             end
         else    
             input = prompt.select("Which item would you like to edit?") do |option|
@@ -122,7 +99,7 @@ class List < ActiveRecord::Base
             puts
             self.user.profile_page
         elsif input == "No"
-            self.homepage
+            self.user.list_homepage(self)
         end
     end
 
@@ -139,7 +116,7 @@ class List < ActiveRecord::Base
             puts
             puts "This gift has been deleted."
             puts
-            self.homepage
+            self.user.list_homepage(self)
         elsif input == "No"
             puts
             gift.edit
