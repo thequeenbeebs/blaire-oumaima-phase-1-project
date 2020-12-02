@@ -3,20 +3,25 @@ class User < ActiveRecord::Base
 
     def profile_page
         prompt = TTY::Prompt.new
+        puts
         input = prompt.select("#{self.username}'s Profile Page") do |option|
             option.choice "View My Lists"
             option.choice "Create A List"
+            option.choice "Back to Home"
         end
         if input == "View My Lists"
             self.view_lists
         elsif input == "Create A List"
             self.create_list
+        elsif input == "Back to Home"
+            CLI.run
         end
     end
 
     def view_lists
         prompt = TTY::Prompt.new
         if self.list.length > 0
+            puts
             input = prompt.select("#{self.username}'s Lists") do |option|
                 self.list.each do |list|
                     option.choice list.name
@@ -25,6 +30,7 @@ class User < ActiveRecord::Base
             list = List.find_by(name: input)
             list.homepage
         else 
+            puts
             puts "#{self.username}'s Lists"
             puts
             puts "You haven't created any lists!"

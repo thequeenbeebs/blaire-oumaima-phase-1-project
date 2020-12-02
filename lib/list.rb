@@ -4,6 +4,7 @@ class List < ActiveRecord::Base
     belongs_to :user
 
     def homepage
+        puts
         puts self.name
         self.gift.each do |gift|
             puts
@@ -15,18 +16,22 @@ class List < ActiveRecord::Base
         total = self.gift.sum {|gift| gift.price }
         puts
         puts "Total Cost: $#{sprintf "%.2f", total}"
-        puts
-        puts "1. Add A Gift"
-        puts "2. Edit Gift"
-        #share list
-        puts "3. Delete List"
-        input = gets.chomp
-        if input == "1"
+        prompt = TTY::Prompt.new
+        input =prompt.select("") do |option|
+            option.choice "Add A Gift"
+            option.choice "Edit Gift"
+            option.choice "Delete List"
+            option.choice "Back to Profile Page"
+            #share list?
+        end
+        if input == "Add A Gift"
             self.add_gift
-        elsif input == "2"
+        elsif input == "Edit Gift"
             self.edit_gift_selector
-        elsif input == "3"
+        elsif input == "Delete List"
             self.delete_list
+        elsif input == "Back to Profile Page"
+            self.user.profile_page
         end
     end
 
@@ -45,12 +50,12 @@ class List < ActiveRecord::Base
     end
 
     def edit_gift_selector
-        puts "Which item would you like to edit?"
-        self.gift.each do |gift|
-            puts
-            puts gift.name
+        prompt = TTY::Prompt.new
+        input = prompt.select("Which item would you like to edit?") do |option|
+            self.gift.each do |gift|
+                option.choice gift.name
+            end
         end
-        input = gets.chomp
         gift = Gift.find_by(name: input)
         gift.edit
     end
@@ -64,14 +69,19 @@ class List < ActiveRecord::Base
     # end
 
     def delete_list
-        puts "Are you sure you want to delete this list? y/n"
-        input = gets.chomp
-        if input == "y"
+        prompt = TTY::Prompt.new
+        input = prompt.select("Are you sure you want to delete this list?") do |option|
+            option.choice "Yes"
+            option.choice "No"
+        end
+        if input == "Yes"
             self.destroy
             self.gift.destroy
+            puts
             puts "This list has been deleted"
+            puts
             self.user.profile_page
-        elsif input == "n"
+        elsif input == "No"
             self.homepage
         end
     end

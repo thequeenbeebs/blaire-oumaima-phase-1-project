@@ -68,11 +68,11 @@ class Gift < ActiveRecord::Base
         end
     end
 
-    def status
-        if self.status == nil
-            self.status = "Not Purchased"
-        end
-    end
+    # def status
+    #     if self.status == nil
+    #         self.status = "Not Purchased"
+    #     end
+    # end
 
 
 end
