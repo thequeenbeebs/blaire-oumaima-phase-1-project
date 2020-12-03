@@ -80,7 +80,7 @@ class List < ActiveRecord::Base
     # def share_list
     #     puts "Who would you like to share this list with?"
     #     input = gets.chomp
-    #     friend = User.find_by(name: input)
+    #     friend = User.find_by(username: input)
     #     FriendsList.create(user_id: friend.id, friend: self.user.name, name: self.name, shopping_or_wish: self.shopping_or_wish how do i add the gifts though?)
     #     puts "We have shared your list with #{friend.name}"
     # end
@@ -110,7 +110,7 @@ class List < ActiveRecord::Base
     def change_name(gift)
         puts "What would you like to change the item's name to?".bold.light_white
         input = gets.chomp
-        gift.name = input
+        gift.update(name: input)
         list = List.find(self.id) 
         list.user.list_homepage(list)
     end
@@ -118,7 +118,7 @@ class List < ActiveRecord::Base
     def change_price(gift)
         puts "What would you like to change the item's price to?"..bold.light_white
         input = gets.chomp
-        gift.price = input.to_f
+        gift.update(price: input.to_f)
         list = List.find(self.id) 
         list.user.list_homepage(list)
     end
@@ -126,7 +126,7 @@ class List < ActiveRecord::Base
     def change_quantity(gift)
         puts "What would you like to change the item's quantity to?".bold.light_white
         input = gets.chomp
-        gift.quantity = input.to_i 
+        gift.update(quantity: input.to_i)
         list = List.find(self.id) 
         list.user.list_homepage(list)
     end
@@ -137,10 +137,10 @@ class List < ActiveRecord::Base
             option.choice "Yes".italic
             option.choice "No"
         end
-        if input == "Yes".italic
-            gift.status = "Purchased".bold.light_magenta
+        if input == "Yes"
+            gift.update(status: "Purchased".bold.light_magenta)
         elsif input == "No"
-            gift.status = "Not Purchased".light_magenta
+            gift.update(status: "Not Purchased".light_magenta)
         end
         list = List.find(self.id)  
         list.user.list_homepage(list)

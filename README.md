@@ -72,20 +72,35 @@ As a User, I want to purchase items on my List. #CORE
 
 Send List to another user? #STRETCH
 
+# Gift Cloud
+## the holidays just got a bit easier.
 
-## Models: Gift < Purchase > List
+Gift Cloud is a CLI application that can be used to create lists for all of your holiday gift-giving needs! Create a username, create the lists you need, and start adding gifts! This is a great way to get your shopping or wish lists organized and all of the information in one place. 
+
+## Setup
+In the root directory folder, type `bundle install` in the terminal to install all gems required, and then type `rake db:migrate` to set up the database tables. After that you should be good to go!
+
+If you would like to play around with some pre-made data rather than creating your own lists, you can run `rake db:seed` in the terminal and the check out the db/seeds.rb file for reference.
+
+## Getting Started
+* Run `ruby bin/run.rb` to begin the program
+* Choose from the selections on the home screen and get your shopping on!
+
+## Models: 
+
+## Gift < Purchase > List
 
 ### Gift 
-* has many :add_to_list
-* has_many :list through :add_to_list
+* has many :add_to_lists
+* has_many :lists through :add_to_lists
 
 ### Add_To_List
   belongs_to :gift
   belongs_to :list
 
 ### List
-* has_many :add_to_list
-* has_many :gift through :add_to_list
+* has_many :add_to_lists
+* has_many :gifts through :add_to_lists
 
 ## List > User
 
@@ -93,5 +108,5 @@ Send List to another user? #STRETCH
 * belongs_to :user
 
 ### User
-* has_many :list
+* has_many :lists
 

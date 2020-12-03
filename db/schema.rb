@@ -10,11 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_02_160652) do
+ActiveRecord::Schema.define(version: 2020_12_03_195659) do
 
   create_table "add_to_lists", force: :cascade do |t|
     t.integer "gift_id"
     t.integer "list_id"
+  end
+
+  create_table "follows", force: :cascade do |t|
+    t.integer "follower_id"
+    t.integer "followee_id"
   end
 
   create_table "gifts", force: :cascade do |t|
