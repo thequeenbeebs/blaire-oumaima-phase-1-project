@@ -80,7 +80,7 @@ class List < ActiveRecord::Base
     # def share_list
     #     puts "Who would you like to share this list with?"
     #     input = gets.chomp
-    #     friend = User.find_by(name: input)
+    #     friend = User.find_by(username: input)
     #     FriendsList.create(user_id: friend.id, friend: self.user.name, name: self.name, shopping_or_wish: self.shopping_or_wish how do i add the gifts though?)
     #     puts "We have shared your list with #{friend.name}"
     # end

@@ -13,6 +13,10 @@ johnstewert = User.create(username: "johnstewert")
 ronconnor = User.create(username: "ronconnor")
 marysmith = User.create(username: "marysmith")
 
+Follow.create(follower_id: oliviabas.id, followee_id: shaylynn.id)
+Follow.create(follower_id: oliviabas.id, followee_id: jameslogan.id)
+Follow.create(follower_id: oliviabas.id, followee_id: marysmith.id)
+
 
 list1 = List.create(name: "my christmas", shopping_or_wish: "wishlist", user_id: shaylynn.id)
 list2 = List.create(name: "things to get", shopping_or_wish: "shopping list", user_id: sarahstone.id)

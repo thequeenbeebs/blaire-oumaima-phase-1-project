@@ -86,19 +86,21 @@ If you would like to play around with some pre-made data rather than creating yo
 * Run `ruby bin/run.rb` to begin the program
 * Choose from the selections on the home screen and get your shopping on!
 
-## Models: Gift < Purchase > List
+## Models: 
+
+## Gift < Purchase > List
 
 ### Gift 
-* has many :add_to_list
-* has_many :list through :add_to_list
+* has many :add_to_lists
+* has_many :lists through :add_to_lists
 
 ### Add_To_List
   belongs_to :gift
   belongs_to :list
 
 ### List
-* has_many :add_to_list
-* has_many :gift through :add_to_list
+* has_many :add_to_lists
+* has_many :gifts through :add_to_lists
 
 ## List > User
 
@@ -106,5 +108,5 @@ If you would like to play around with some pre-made data rather than creating yo
 * belongs_to :user
 
 ### User
-* has_many :list
+* has_many :lists
 
