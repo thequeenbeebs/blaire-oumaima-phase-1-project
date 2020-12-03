@@ -1,7 +1,7 @@
 # Gift Cloud
 ## the holidays just got a bit easier.
 
-Oumaima Azzat and Blaire Baker
+### Oumaima Azzat and Blaire Baker
 
 Gift Cloud is a CLI application that can be used to create lists for all of your holiday gift-giving needs! Create a username, create the lists you need, and start adding gifts! This is a great way to get your shopping or wish lists organized and have all of the information in one place. 
 
@@ -25,8 +25,8 @@ If you would like to play around with some pre-made data rather than creating yo
 * has_many :lists through :add_to_lists
 
 ### Add_To_List
-  belongs_to :gift
-  belongs_to :list
+* belongs_to :gift
+* belongs_to :list
 
 ### List
 * has_many :add_to_lists
@@ -50,15 +50,10 @@ If you would like to play around with some pre-made data rather than creating yo
 * belongs_to :follower (user)
 * belongs_to :folowee (user)
 
-. 
-
-User stories:
-
-As a User, I want to receive recommendations for Gifts. #STRETCH
-As a User, I want to be able to create a List. #CORE
-As a User, I want to be able to add and remove Gifts from the List. #CORE
-As a User, I want to purchase items on my List. #CORE
-
-Send List to another user? #STRETCH
+## User Stories:
+* As a User, I want to be able to create a List. 
+* As a User, I want to be able to add and remove Gifts from the List.
+* As a User, I want to edit the Gifts on my List. 
+* As a User, I want to be able to interact with other Users and see their Lists.
 
 
