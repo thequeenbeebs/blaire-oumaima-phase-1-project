@@ -1,22 +1,24 @@
 class User < ActiveRecord::Base
     has_many :lists
 
+
+
     def profile_page
         prompt = TTY::Prompt.new
         puts
-        input = prompt.select("#{self.username}'s Profile Page") do |option|
-            option.choice "View My Lists"
-            option.choice "Create A List"
-            option.choice "Back to Home"
-            option.choice "Exit"
+        input = prompt.select("#{self.username}'s profile".white.bold) do |option|
+            option.choice "view my lists"
+            option.choice "create a list"
+            option.choice "back to home"
+            option.choice "exit".white.italic
         end
-        if input == "View My Lists"
+        if input == "view my lists"
             self.view_lists
-        elsif input == "Create A List"
+        elsif input == "create a list"
             self.create_list
-        elsif input == "Back to Home"
+        elsif input == "back to home"
             CLI.run
-        elsif input == "Exit"
+        elsif input == "exit".white.italic 
             exit 
         end
     end
@@ -25,7 +27,7 @@ class User < ActiveRecord::Base
         prompt = TTY::Prompt.new
         if self.lists.length > 0
             puts
-            input = prompt.select("#{self.username}'s Lists") do |option|
+            input = prompt.select("#{self.username}'s lists".light_magenta) do |option|
                 self.lists.each do |list|
                     option.choice list.name
                 end 
@@ -34,28 +36,28 @@ class User < ActiveRecord::Base
             self.list_homepage(list)
         else 
             puts
-            puts "#{self.username}'s Lists"
+            puts "#{self.username}'s lists".magenta
             puts
-            puts "You haven't created any lists!"
-            response = prompt.select("Would you like to create one?") do |option|
-                option.choice "Yes"
-                option.choice "No"
+            puts "you haven't created any lists!"
+            response = prompt.select("would you like to create one?") do |option|
+                option.choice "yes".bold.italic
+                option.choice "no".bold
             end
-            if response == "Yes"
+            if response == "yes"
                 self.create_list
-            elsif response == "No"
+            elsif response == "no"
                 self.profile_page
             end
         end
     end
 
     def create_list
-        puts "What would you like to name your list?"
+        puts "what would you like to name your list?".magenta.bold
         name = gets.chomp
         prompt = TTY::Prompt.new
-        type = prompt.select("Is this a shopping list or a wish list?") do |option|
-            option.choice "Shopping"
-            option.choice "Wish"
+        type = prompt.select("is this a shopping list or a wish list?".bold.italic) do |option|
+            option.choice "shopping"
+            option.choice "wish"
         end
         new_list = List.create(name: name, shopping_or_wish: type, user_id: self.id)
         self.list_homepage(new_list)
@@ -67,29 +69,29 @@ class User < ActiveRecord::Base
         puts "#{list.shopping_or_wish} List".italic
         list.gifts.each do |gift|
             puts
-            puts "Name: #{gift.name}"
+            puts "Name: #{gift.name}".magenta 
             puts "Price: $#{sprintf "%.2f", gift.price}"
-            puts "Quantity: #{gift.quantity}"
+            puts "Quantity: #{gift.quantity}".magenta 
             puts "Status: #{gift.status}"
         end
         total = list.gifts.sum {|gift| gift.price }
         puts
-        puts "Total Cost: $#{sprintf "%.2f", total}"
+        puts "Total Cost: $#{sprintf "%.2f", total}".magenta 
         prompt = TTY::Prompt.new
         input =prompt.select("") do |option|
-            option.choice "Add A Gift"
-            option.choice "Edit Gift"
-            option.choice "Delete List"
-            option.choice "Back to Profile Page"
+            option.choice "add a gift"
+            option.choice "edit gift"
+            option.choice "delete list"
+            option.choice "back to profile page".italic
             #share list?
         end
-        if input == "Add A Gift"
+        if input == "add a gift"
             list.add_gift
-        elsif input == "Edit Gift"
+        elsif input == "edit gift"
             list.edit_gift_selector
-        elsif input == "Delete List"
+        elsif input == "delete list"
             list.delete_list
-        elsif input == "Back to Profile Page"
+        elsif input == "back to profile page".italic
             self.profile_page
         end
     end
@@ -98,3 +100,4 @@ class User < ActiveRecord::Base
       #view all lists your friends shared with you
 
 end
+
