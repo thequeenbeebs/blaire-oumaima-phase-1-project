@@ -27,11 +27,19 @@ class User < ActiveRecord::Base
             puts
             input = prompt.select("#{self.username}'s Lists") do |option|
                 self.lists.each do |list|
-                    option.choice list.name
+                    option.choice "--- #{list.name}"
                 end 
+                option.choice "Create A List"
+                option.choice "Back to Profile Page"
             end
-            list = List.find_by(name: input)
-            self.list_homepage(list)
+            if input == "Create A List"
+                self.create_list
+            elsif input == "Back to Profile Page"
+                self.profile_page
+            else
+                list = List.find_by(name: input)
+                self.list_homepage(list)
+            end
         else 
             puts
             puts "#{self.username}'s Lists"
@@ -58,7 +66,8 @@ class User < ActiveRecord::Base
             option.choice "Wish"
         end
         new_list = List.create(name: name, shopping_or_wish: type, user_id: self.id)
-        self.list_homepage(new_list)
+        user = User.find(self.id)
+        user.list_homepage(new_list)
     end
 
     def list_homepage(list)
