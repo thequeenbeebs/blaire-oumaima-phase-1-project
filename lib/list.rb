@@ -110,7 +110,7 @@ class List < ActiveRecord::Base
     def change_name(gift)
         puts "What would you like to change the item's name to?"
         input = gets.chomp
-        gift.name = input
+        gift.update(name: input)
         list = List.find(self.id) 
         list.user.list_homepage(list)
     end
@@ -118,7 +118,7 @@ class List < ActiveRecord::Base
     def change_price(gift)
         puts "What would you like to change the item's price to?"
         input = gets.chomp
-        gift.price = input.to_f
+        gift.update(price: input.to_f)
         list = List.find(self.id) 
         list.user.list_homepage(list)
     end
@@ -126,7 +126,7 @@ class List < ActiveRecord::Base
     def change_quantity(gift)
         puts "What would you like to change the item's quantity to?"
         input = gets.chomp
-        gift.quantity = input.to_i 
+        gift.update(quantity: input.to_i)
         list = List.find(self.id) 
         list.user.list_homepage(list)
     end
@@ -138,9 +138,9 @@ class List < ActiveRecord::Base
             option.choice "No"
         end
         if input == "Yes"
-            gift.status = "Purchased"
+            gift.update(status: "Purchased")
         elsif input == "No"
-            gift.status = "Not Purchased"
+            gift.update(status: "Not Purchased")
         end
         list = List.find(self.id)  
         list.user.list_homepage(list)
