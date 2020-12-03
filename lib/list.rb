@@ -32,7 +32,7 @@ class List < ActiveRecord::Base
     def edit_gift_selector
         prompt = TTY::Prompt.new
         puts
-        if self.gift.length == 0
+        if self.gifts.length == 0
             puts "You don't have any gifts yet!"
             input = prompt.select("Would you like to add one?") do |option|
                 option.choice "Yes"
