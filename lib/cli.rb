@@ -38,15 +38,15 @@ class CLI
         user = User.find_by(username: username)
         if user == nil
             puts 
-            puts "This account does not exist.".bold.white
+            puts "this account does not exist.".bold.white
             puts
-            response = prompt.select("Create an account?".red) do |option|
-                option.choice "Yes"
-                option.choice "No"
+            response = prompt.select("create an account?".red) do |option|
+                option.choice "yes"
+                option.choice "no"
             end
-            if response == "Yes"
+            if response == "yes"
                 self.sign_up
-            elsif response == "No"
+            elsif response == "no"
                 self.run
             end 
         else
@@ -56,16 +56,16 @@ class CLI
 
     def self.sign_up
         puts
-        puts "Create An Account Here!".red
+        puts "create an account here!".red
         puts
-        puts "What would you like your username to be?".italic.white
+        puts "what would you like your username to be?".italic.white
         username = gets.chomp
         user = User.find_by(username: username)
         if user == nil
             user = User.create(username: username)
             user.profile_page
         else
-            puts "This username already exists. Please choose a different username.".bold.yellow
+            puts "this username already exists. please choose a different username.".yellow
             self.sign_up
         end
     end

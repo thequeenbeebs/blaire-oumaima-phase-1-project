@@ -5,7 +5,7 @@ class List < ActiveRecord::Base
 
     def add_gift
         puts
-        puts "Add A Gift! You Deserve it.".white
+        puts "add a gift!".bold.white
         puts
         puts "Name:".italic.magenta 
         input_1 = gets.chomp
@@ -17,14 +17,14 @@ class List < ActiveRecord::Base
         AddToList.create(gift_id: new_gift.id, list_id: self.id)
         puts
         prompt = TTY::Prompt.new
-        input = prompt.select("Your gift has been added!".bold.white) do |option|
-            option.choice "Back to List"
-            option.choice "Back to Profile Page".green 
+        input = prompt.select("your gift has been added!".bold.white) do |option|
+            option.choice "back to list".light_magenta
+            option.choice "back to profile page".light_magenta 
         end
-        if input == "Back to List".light_magenta
+        if input == "back to list".light_magenta
             list = List.find(self.id)  
             list.user.list_homepage(list)
-        elsif input == "Back to Profile Page".light_magenta
+        elsif input == "back to profile page".light_magenta 
             self.user.profile_page
         end
     end
@@ -33,18 +33,18 @@ class List < ActiveRecord::Base
         prompt = TTY::Prompt.new
         puts
         if self.gifts.length == 0
-            puts "You don't have any gifts yet!"
-            input = prompt.select("Would you like to add one?") do |option|
-                option.choice "Yes"
-                option.choice "No"
+            puts "you don't have any gifts yet!".magenta
+            input = prompt.select("would you like to add one?") do |option|
+                option.choice "yes".italic
+                option.choice "no".bold
             end
-            if input == "Yes"
+            if input == "yes".italic
                 self.add_gift
-            elsif input == "No"
+            elsif input == "no".bold
                 self.user.list_homepage(self)
             end
         else    
-            input = prompt.select("Which item would you like to edit?".light_magenta) do |option|
+            input = prompt.select("which item would you like to edit?".light_magenta) do |option|
                 self.gifts.each do |gift|
                     option.choice gift.name
                 end
@@ -57,22 +57,22 @@ class List < ActiveRecord::Base
     def edit_gift_menu(gift)
         prompt = TTY::Prompt.new
         puts
-        input = prompt.select("What would you like to change?".light_magenta) do |option|
-            option.choice "Change Name"
-            option.choice "Change Price"
-            option.choice "Change Quantity"
-            option.choice "Change Status"
-            option.choice "Delete Gift"
+        input = prompt.select("what would you like to change?".light_magenta) do |option|
+            option.choice "change name"
+            option.choice "change price"
+            option.choice "change quantity"
+            option.choice "change status"
+            option.choice "delete gift"
         end
-        if input == "Change Name"
+        if input == "change name"
             self.change_name(gift)
-        elsif input == "Change Price"
+        elsif input == "change price"
             self.change_price(gift)
-        elsif input == "Change Quantity"
+        elsif input == "change quantity"
             self.change_quantity(gift)
-        elsif input == "Change Status"
+        elsif input == "change status"
             self.change_status(gift)
-        elsif input == "Delete Gift"
+        elsif input == "delete gift"
             self.delete_gift(gift)
         end
     end
@@ -88,19 +88,19 @@ class List < ActiveRecord::Base
     def delete_list
         puts
         prompt = TTY::Prompt.new
-        input = prompt.select("Are you sure you want to delete this list?") do |option|
-            option.choice "Yes"
-            option.choice "No"
+        input = prompt.select("are you sure you want to delete this list?".italic.yellow) do |option|
+            option.choice "yes".italic
+            option.choice "no".bold
         end
-        if input == "Yes"
+        if input == "yes".italic
             self.destroy
             self.gifts.destroy
             puts
-            puts "This list has been deleted"
+            puts "this list has been deleted".yellow
             puts
             user = User.find(self.user.id)  
             user.profile_page
-        elsif input == "No"
+        elsif input == "no".bold 
             self.user.list_homepage(self)
         end
     end
@@ -108,7 +108,7 @@ class List < ActiveRecord::Base
     #GIFT EDITING METHODS
 
     def change_name(gift)
-        puts "What would you like to change the item's name to?".bold.light_white
+        puts "what would you like to change the item's name to?".bold.light_magenta
         input = gets.chomp
         gift.update(name: input)
         list = List.find(self.id) 
@@ -116,7 +116,7 @@ class List < ActiveRecord::Base
     end
 
     def change_price(gift)
-        puts "What would you like to change the item's price to?"..bold.light_white
+        puts "what would you like to change the item's price to?".bold.light_magenta
         input = gets.chomp
         gift.update(price: input.to_f)
         list = List.find(self.id) 
@@ -124,7 +124,7 @@ class List < ActiveRecord::Base
     end
 
     def change_quantity(gift)
-        puts "What would you like to change the item's quantity to?".bold.light_white
+        puts "what would you like to change the item's quantity to?".bold.light_magenta
         input = gets.chomp
         gift.update(quantity: input.to_i)
         list = List.find(self.id) 
@@ -133,14 +133,14 @@ class List < ActiveRecord::Base
 
     def change_status(gift)
         prompt = TTY::Prompt.new
-        input = prompt.select("Was this item purchased?".bold.light_magenta) do |option|
-            option.choice "Yes".italic
-            option.choice "No"
+        input = prompt.select("was this item purchased?".bold.light_magenta) do |option|
+            option.choice "yes".italic
+            option.choice "no"
         end
-        if input == "Yes"
-            gift.update(status: "Purchased".bold.light_magenta)
-        elsif input == "No"
-            gift.update(status: "Not Purchased".light_magenta)
+        if input == "yes".italic
+            gift.update(status: "purchased".bold.light_magenta)
+        elsif input == "no"
+            gift.update(status: "not purchased".light_magenta)
         end
         list = List.find(self.id)  
         list.user.list_homepage(list)
@@ -148,18 +148,18 @@ class List < ActiveRecord::Base
 
     def delete_gift(gift)
         prompt = TTY::Prompt.new
-        input = prompt.select("Are you sure you want to delete this gift?".italic.yellow) do |option|
-            option.choice "Yes"
-            option.choice "No"
+        input = prompt.select("are you sure you want to delete this gift?".italic.yellow) do |option|
+            option.choice "yes".italic
+            option.choice "no".bold
         end
-        if input == "Yes"
+        if input == "yes"
             joiner = AddToList.find_by(list_id: self.id, gift_id: gift.id)
             joiner.destroy
             gift.destroy
             puts
-            puts "This gift has been deleted."
+            puts "this gift has been deleted.".yellow
             puts
-        elsif input == "No".bold
+        elsif input == "no".bold
             puts
         end
         list = List.find(self.id) 

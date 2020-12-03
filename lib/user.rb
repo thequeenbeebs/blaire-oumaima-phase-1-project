@@ -38,12 +38,12 @@ class User < ActiveRecord::Base
                 self.lists.each do |list|
                     option.choice list.name
                 end 
-                option.choice "--- Create A List ---"
-                option.choice "--- Back to Profile Page ---"
+                option.choice " - create a list -".italic
+                option.choice " - back to profile page -".italic
             end
-            if input == "--- Create A List ---"
+            if input == " - create a list - ".italic
                 self.create_list
-            elsif input == "--- Back to Profile Page ---"
+            elsif input == " - back to profile page  - ".italic
                 self.profile_page
             else
                 list = List.find_by(name: input, user_id: self.id)
@@ -54,20 +54,20 @@ class User < ActiveRecord::Base
             puts "#{self.username}'s lists".magenta
             puts
             puts "you haven't created any lists!"
-            response = prompt.select("would you like to create one?") do |option|
+            response = prompt.select("would you like to create one?".light_magenta) do |option|
                 option.choice "yes".bold.italic
                 option.choice "no".bold
             end
-            if response == "yes"
+            if response == "yes".bold.italic
                 self.create_list
-            elsif response == "no"
+            elsif response == "no".bold
                 self.profile_page
             end
         end
     end
 
     def create_list
-        puts "what would you like to name your list?".magenta.bold
+        puts "what would you like to name your list?".bold
         name = gets.chomp
         prompt = TTY::Prompt.new
         type = prompt.select("is this a shopping list or a wish list?".bold.italic) do |option|
@@ -125,21 +125,21 @@ class User < ActiveRecord::Base
             end
             self.friend_list_menu(input)
         else
-            puts "You don't have any friends yet!"
-            puts "Add a friend?"
+            puts "you don't have any friends yet!"
+            puts "add a friend?"
             #tty prompt yes/no
         end
     end
 
     def friend_list_menu(friend)
         prompt = TTY::Prompt.new
-        input = prompt.select("#{friend.username}'s Lists") do |option|
+        input = prompt.select("#{friend.username}'s lists") do |option|
                 friend.lists.each do |list|
                     option.choice list.name
                 end 
-                option.choice "--- Back to My Profile Page ---"
+                option.choice " - back to profile page - "
             end
-        if input == "--- Back to My Profile Page ---"
+        if input == " - back to profile page - "
                 self.profile_page
         else
             list = List.find_by(name: input, user_id: friend.id)
@@ -150,7 +150,7 @@ class User < ActiveRecord::Base
     def view_friend_list(list)
         puts
         puts list.name.bold
-        puts "#{list.shopping_or_wish} List".italic
+        puts "#{list.shopping_or_wish} list".italic
         list.gifts.each do |gift|
             puts
             puts "Name: #{gift.name}"
@@ -163,9 +163,9 @@ class User < ActiveRecord::Base
         puts "Total Cost: $#{sprintf "%.2f", total}"
         prompt = TTY::Prompt.new
         input =prompt.select("") do |option|
-            option.choice "Back to Profile Page"
+            option.choice "back to profile page".italic.white
         end
-        if input == "Back to Profile Page"
+        if input == "back to profile page".italic.white
             self.profile_page
         end
     end
