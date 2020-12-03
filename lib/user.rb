@@ -122,24 +122,98 @@ class User < ActiveRecord::Base
                     friend = User.find(follow.followee_id)
                     option.choice friend.username
                 end
+                option.choice "--- add a friend ---"
+                option.choice "--- remove a friend ---"
             end
-            self.friend_list_menu(input)
+            if input == "--- add a friend ---"
+                self.add_friend
+            elsif input == "--- remove a friend ---"
+                self.remove_friend
+            else
+                friend = User.find_by(username: input)
+                self.friend_list_menu(friend)
+            end
         else
-            puts "you don't have any friends yet!"
-            puts "add a friend?"
-            #tty prompt yes/no
+            puts "You don't have any friends yet!"
+            input = prompt.select("Add a friend?") do |option|
+                option.choice "Yes"
+                option.choice "No"
+            end
+            if input == "Yes"
+                self.add_friend
+            elsif input == "No"
+                self.profile_page
+            end
+        end
+    end
+
+    def add_friend
+        prompt = TTY::Prompt.new
+        puts "Please enter you're friend's username:"
+        input = gets.chomp
+        friend = User.find_by(username: input)
+        if friend == nil 
+            puts
+            puts "That username does not exist."
+        elsif friend == self
+            puts
+            puts "You cannot be friends with yourself!"
+        else
+            Follow.create(follower_id: friend.id, followee_id: self.id)
+            puts "#{friend.username} is now your friend!"
+        end
+        input = prompt.select("") do |option|
+            option.choice "Add Friend"
+            option.choice "Back to Friend's Lists"
+            option.choice "Back to Profile Page"
+        end
+        if input == "Add Friend"
+            self.add_friend
+        elsif input == "Back to Friend's Lists"
+            user = User.find(self.id)
+            user.friend_menu
+        elsif input == "Back to Profile Page"
+            user = User.find(self.id)
+            user.profile_page
+        end
+    end
+
+    def remove_friend
+        prompt = TTY::Prompt.new
+        input = prompt.select("Which friend do you want to remove?") do
+            self.followed_users.each do |follow|
+                friend = User.find(follow.followee_id)
+                option.choice friend.username
+            end
+        end
+        remove = User.find_by(username: input)
+        remove.destroy
+        puts "You have removed #{input}."
+        input =prompt.select("") do |option|
+            option.choice "Back to Friend's Lists"
+            option.choice "Back to Profile Page"
+        end
+        if input == "Back to Profile Page"
+            self.profile_page
+        elsif input == "Back to Friend's Lists"
+            self.friend_menu
         end
     end
 
     def friend_list_menu(friend)
+        puts "#{friend.username}'s Lists"
+        if friend.lists.length == 0
+            puts
+            puts "Your friend doesn't have any lists yet!"
+        end
         prompt = TTY::Prompt.new
-        input = prompt.select("#{friend.username}'s lists") do |option|
-                friend.lists.each do |list|
-                    option.choice list.name
-                end 
-                option.choice " - back to profile page - "
-            end
-        if input == " - back to profile page - "
+        input = prompt.select("") do |option|
+            friend.lists.each do |list|
+                option.choice list.name
+            end 
+            option.choice "--- Back to My Profile Page ---"
+        end
+        if input == "--- Back to My Profile Page ---"
                 self.profile_page
         else
             list = List.find_by(name: input, user_id: friend.id)
@@ -163,10 +237,13 @@ class User < ActiveRecord::Base
         puts "Total Cost: $#{sprintf "%.2f", total}"
         prompt = TTY::Prompt.new
         input =prompt.select("") do |option|
-            option.choice "back to profile page".italic.white
+            option.choice "Back to Friend's Lists"
+            option.choice "Back to Profile Page"
         end
         if input == "back to profile page".italic.white
             self.profile_page
+        elsif input == "Back to Friend's Lists"
+            self.friend_menu
         end
     end
 
