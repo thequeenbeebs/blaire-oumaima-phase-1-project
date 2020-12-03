@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-    has_many :list
+    has_many :lists
 
     def profile_page
         prompt = TTY::Prompt.new
@@ -23,10 +23,10 @@ class User < ActiveRecord::Base
 
     def view_lists
         prompt = TTY::Prompt.new
-        if self.list.length > 0
+        if self.lists.length > 0
             puts
             input = prompt.select("#{self.username}'s Lists") do |option|
-                self.list.each do |list|
+                self.lists.each do |list|
                     option.choice list.name
                 end 
             end
@@ -65,14 +65,14 @@ class User < ActiveRecord::Base
         puts
         puts list.name.bold
         puts "#{list.shopping_or_wish} List".italic
-        list.gift.each do |gift|
+        list.gifts.each do |gift|
             puts
             puts "Name: #{gift.name}"
             puts "Price: $#{sprintf "%.2f", gift.price}"
             puts "Quantity: #{gift.quantity}"
             puts "Status: #{gift.status}"
         end
-        total = list.gift.sum {|gift| gift.price }
+        total = list.gifts.sum {|gift| gift.price }
         puts
         puts "Total Cost: $#{sprintf "%.2f", total}"
         prompt = TTY::Prompt.new

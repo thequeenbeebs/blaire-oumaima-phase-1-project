@@ -1,6 +1,6 @@
 class List < ActiveRecord::Base
-    has_many :add_to_list
-    has_many :gift, through: :add_to_list
+    has_many :add_to_lists
+    has_many :gifts, through: :add_to_lists
     belongs_to :user
 
     def add_gift
@@ -22,8 +22,9 @@ class List < ActiveRecord::Base
             option.choice "Back to Profile Page"
         end
         if input == "Back to List"
-            self.user.list_homepage(self)
-        elsif input == "Back to Profile Page"
+            list = List.find(self.id)  
+            list.user.list_homepage(list)
+        elsif input == "Back to Profile Page" 
             self.user.profile_page
         end
     end
@@ -44,7 +45,7 @@ class List < ActiveRecord::Base
             end
         else    
             input = prompt.select("Which item would you like to edit?") do |option|
-                self.gift.each do |gift|
+                self.gifts.each do |gift|
                     option.choice gift.name
                 end
             end
@@ -64,13 +65,13 @@ class List < ActiveRecord::Base
             option.choice "Delete Gift"
         end
         if input == "Change Name"
-            gift.change_name
+            self.change_name(gift)
         elsif input == "Change Price"
-            gift.change_price
+            self.change_price(gift)
         elsif input == "Change Quantity"
-            gift.change_quantity
+            self.change_quantity(gift)
         elsif input == "Change Status"
-            gift.change_status
+            self.change_status(gift)
         elsif input == "Delete Gift"
             self.delete_gift(gift)
         end
@@ -93,14 +94,56 @@ class List < ActiveRecord::Base
         end
         if input == "Yes"
             self.destroy
-            self.gift.destroy
+            self.gifts.destroy
             puts
             puts "This list has been deleted"
             puts
-            self.user.profile_page
+            user = User.find(self.user.id)  
+            user.profile_page
         elsif input == "No"
             self.user.list_homepage(self)
         end
+    end
+
+    #GIFT EDITING METHODS
+
+    def change_name(gift)
+        puts "What would you like to change the item's name to?"
+        input = gets.chomp
+        gift.name = input
+        list = List.find(self.id) 
+        list.user.list_homepage(list)
+    end
+
+    def change_price(gift)
+        puts "What would you like to change the item's price to?"
+        input = gets.chomp
+        gift.price = input.to_f
+        list = List.find(self.id) 
+        list.user.list_homepage(list)
+    end
+
+    def change_quantity(gift)
+        puts "What would you like to change the item's quantity to?"
+        input = gets.chomp
+        gift.quantity = input.to_i 
+        list = List.find(self.id) 
+        list.user.list_homepage(list)
+    end
+
+    def change_status(gift)
+        prompt = TTY::Prompt.new
+        input = prompt.select("Did you purchase this item?") do |option|
+            option.choice "Yes"
+            option.choice "No"
+        end
+        if input == "Yes"
+            gift.status = "Purchased"
+        elsif input == "No"
+            gift.status = "Not Purchased"
+        end
+        list = List.find(self.id)  
+        list.user.list_homepage(list)
     end
 
     def delete_gift(gift)
@@ -116,12 +159,15 @@ class List < ActiveRecord::Base
             puts
             puts "This gift has been deleted."
             puts
-            self.user.list_homepage(self)
         elsif input == "No"
             puts
-            gift.edit
         end
+        list = List.find(self.id) 
+        list.user.list_homepage(list) 
     end
+
+
+    
 
 
 
