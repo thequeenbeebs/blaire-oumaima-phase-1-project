@@ -65,6 +65,7 @@ class CLI
             user.profile_page
         else
             puts "This username already exists. Please choose a different username.".bold.yellow
+            self.sign_up
         end
     end
 

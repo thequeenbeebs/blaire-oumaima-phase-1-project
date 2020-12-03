@@ -27,17 +27,17 @@ class User < ActiveRecord::Base
             puts
             input = prompt.select("#{self.username}'s Lists") do |option|
                 self.lists.each do |list|
-                    option.choice "--- #{list.name}"
+                    option.choice list.name
                 end 
-                option.choice "Create A List"
-                option.choice "Back to Profile Page"
+                option.choice "--- Create A List ---"
+                option.choice "--- Back to Profile Page ---"
             end
-            if input == "Create A List"
+            if input == "--- Create A List ---"
                 self.create_list
-            elsif input == "Back to Profile Page"
+            elsif input == "--- Back to Profile Page ---"
                 self.profile_page
             else
-                list = List.find_by(name: input)
+                list = List.find_by(name: input, user_id: self.id)
                 self.list_homepage(list)
             end
         else 
@@ -81,7 +81,7 @@ class User < ActiveRecord::Base
             puts "Quantity: #{gift.quantity}"
             puts "Status: #{gift.status}"
         end
-        total = list.gifts.sum {|gift| gift.price }
+        total = list.gifts.sum {|gift| gift.price * gift.quantity }
         puts
         puts "Total Cost: $#{sprintf "%.2f", total}"
         prompt = TTY::Prompt.new
