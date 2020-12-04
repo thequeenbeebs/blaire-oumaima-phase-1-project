@@ -5,7 +5,7 @@ class List < ActiveRecord::Base
 
     def add_gift
         puts
-        puts "add a gift!".bold.white
+        puts "lets add a gift!".bold.white
         puts
         puts "Name:".italic.magenta 
         input_1 = gets.chomp
@@ -34,7 +34,8 @@ class List < ActiveRecord::Base
         puts
         if self.gifts.length == 0
             puts "you don't have any gifts yet!".magenta
-            input = prompt.select("would you like to add one?") do |option|
+            puts
+            input = prompt.select("     would you like to add one?      ".on_white) do |option|
                 option.choice "yes".italic
                 option.choice "no".bold
             end
@@ -44,7 +45,7 @@ class List < ActiveRecord::Base
                 self.user.list_homepage(self)
             end
         else    
-            input = prompt.select("which item would you like to edit?".light_magenta) do |option|
+            input = prompt.select("which item would you like to edit?".light_magenta.on_white) do |option|
                 self.gifts.each do |gift|
                     option.choice gift.name
                 end

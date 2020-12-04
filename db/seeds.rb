@@ -10,6 +10,8 @@ Follow.delete_all
 
 santa = User.create(username: "santa")
 mrs_claus = User.create(username: "mrs_claus")
+rudoplh = User.create(username: "rudolph")
+prancer = User.create(username: "prancer")
 nice = List.create(name: "The Nice List", user_id: santa.id, shopping_or_wish: "shopping")
 naughty = List.create(name: "The Naughty List", user_id: santa.id, shopping_or_wish: "shopping")
 baby = List.create(name: "Santa Baby", user_id: mrs_claus.id, shopping_or_wish: "wish")

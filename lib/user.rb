@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
     def profile_page
         prompt = TTY::Prompt.new
         puts
-        input = prompt.select("#{self.username}'s profile".white.bold) do |option|
+        input = prompt.select("             #{self.username}'s profile              ".bold.red.on_white) do |option|
             option.choice "view my lists"
             option.choice "create a list"
             option.choice "view a friend's lists"
@@ -34,16 +34,16 @@ class User < ActiveRecord::Base
         prompt = TTY::Prompt.new
         if self.lists.length > 0
             puts
-            input = prompt.select("#{self.username}'s lists".light_magenta) do |option|
+            input = prompt.select("                  YOUR LISTS                          ".italic.light_magenta) do |option|
                 self.lists.each do |list|
                     option.choice list.name
                 end 
-                option.choice " - create a list -".italic
-                option.choice " - back to profile page -".italic
+                option.choice "     create a list     ".italic
+                option.choice "     back to profile page     ".italic
             end
-            if input == " - create a list - ".italic
+            if input == "     create a list     ".italic
                 self.create_list
-            elsif input == " - back to profile page  - ".italic
+            elsif input == "     back to profile page     ".italic
                 self.profile_page
             else
                 list = List.find_by(name: input, user_id: self.id)
@@ -51,7 +51,7 @@ class User < ActiveRecord::Base
             end
         else 
             puts
-            puts "#{self.username}'s lists".magenta
+            puts ("                   YOUR LISTS                          ".italic.light_magenta)
             puts
             puts "you haven't created any lists!"
             response = prompt.select("would you like to create one?".light_magenta) do |option|
@@ -67,10 +67,11 @@ class User < ActiveRecord::Base
     end
 
     def create_list
+        puts 
         puts "what would you like to name your list?".bold
         name = gets.chomp
         prompt = TTY::Prompt.new
-        type = prompt.select("is this a shopping list or a wish list?".bold.italic) do |option|
+        type = prompt.select("is this a shopping list or a wish list?".magenta.bold.italic) do |option|
             option.choice "shopping"
             option.choice "wish"
         end
@@ -80,9 +81,9 @@ class User < ActiveRecord::Base
     end
 
     def list_homepage(list)
-        puts
         puts list.name.bold
-        puts "#{list.shopping_or_wish} List".italic
+        puts 
+        puts "#{list.shopping_or_wish} list".italic
         list.gifts.each do |gift|
             puts
             puts "Name: #{gift.name}".magenta 
@@ -92,7 +93,7 @@ class User < ActiveRecord::Base
         end
         total = list.gifts.sum {|gift| gift.price * gift.quantity }
         puts
-        puts "Total Cost: $#{sprintf "%.2f", total}".magenta 
+        puts "  Total Cost: $#{sprintf "%.2f", total}   ".magenta.on_white
         prompt = TTY::Prompt.new
         input =prompt.select("") do |option|
             option.choice "add a gift"
@@ -117,25 +118,32 @@ class User < ActiveRecord::Base
     def friend_menu
         prompt = TTY::Prompt.new
         if self.followed_users.length > 0
-            input = prompt.select("select a friend:") do |option|
+            puts 
+            puts
+            input = prompt.select("       select a friend:       ".bold.italic.red.on_white) do |option|
                 self.followed_users.each do |follow|
                     friend = User.find(follow.followee_id)
                     option.choice friend.username
                 end
-                option.choice "--- add a friend ---"
-                option.choice "--- remove a friend ---"
+                option.choice "     add a friend       "
+                option.choice "     remove a friend    "
+                option.choice "     back to profile page    "
             end
-            if input == "--- add a friend ---"
+            if input == "     add a friend       "
                 self.add_friend
-            elsif input == "--- remove a friend ---"
+            elsif input == "     remove a friend    "
                 self.remove_friend
+            elsif input == "     back to profile page    "
+                self.profile_page 
             else
                 friend = User.find_by(username: input)
                 self.friend_list_menu(friend)
             end
         else
+            puts 
             puts "you don't have any friends yet!".light_magenta
-            input = prompt.select("add a friend?") do |option|
+            puts 
+            input = prompt.select("     would you like to add a friend?     ".white.on_red) do |option|
                 option.choice "yes".italic
                 option.choice "no"
             end
@@ -149,7 +157,9 @@ class User < ActiveRecord::Base
 
     def add_friend
         prompt = TTY::Prompt.new
+        puts
         puts "please enter your friend's username:".light_magenta
+        puts 
         input = gets.chomp
         friend = User.find_by(username: input)
         if friend == nil 
@@ -160,7 +170,7 @@ class User < ActiveRecord::Base
             puts "you cannot be friends with yourself 🥺!"
         else
             Follow.create(follower_id: self.id, followee_id: friend.id)
-            puts "#{friend.username} is now your friend!".cyan
+            puts "          🎊 #{friend.username} is now your friend! 🎊            ".bold.red.on_white
         end
         input = prompt.select("") do |option|
             option.choice "add friend"
@@ -180,14 +190,15 @@ class User < ActiveRecord::Base
 
     def remove_friend
         prompt = TTY::Prompt.new
-        input = prompt.select("Which friend do you want to remove?") do |option|
+        input = prompt.select("which friend do you want to remove?") do |option|
             self.followed_users.each do |follow|
                 friend = User.find(follow.followee_id)
                 option.choice friend.username
             end
         end
-        remove = User.find_by(username: input)
-        remove.destroy
+        friend = User.find_by(username: input)
+        joiner = Follow.find_by(followee_id: friend.id, follower_id: self.id)
+        joiner.destroy
         puts "you have removed #{input}."
         input =prompt.select("") do |option|
             option.choice "back to friend's lists"
@@ -202,19 +213,19 @@ class User < ActiveRecord::Base
     end
 
     def friend_list_menu(friend)
-        puts "#{friend.username}'s Lists"
+        puts "#{friend.username}'s lists"
         if friend.lists.length == 0
             puts
-            puts "your friend doesn't have any lists yet!"
+            puts "your friend doesn't have any lists yet!".bold
         end
         prompt = TTY::Prompt.new
         input = prompt.select("") do |option|
             friend.lists.each do |list|
                 option.choice list.name
             end 
-            option.choice "--- back to my profile page ---"
+            option.choice "back to my profile page"
         end
-        if input == "--- back to my profile page ---"
+        if input == "back to my profile page"
                 self.profile_page
         else
             list = List.find_by(name: input, user_id: friend.id)
@@ -228,22 +239,22 @@ class User < ActiveRecord::Base
         puts "#{list.shopping_or_wish} list".italic
         list.gifts.each do |gift|
             puts
-            puts "Name: #{gift.name}"
-            puts "Price: $#{sprintf "%.2f", gift.price}"
-            puts "Quantity: #{gift.quantity}"
-            puts "Status: #{gift.status}"
+            puts "Name: #{gift.name}".magenta
+            puts "Price: $#{sprintf "%.2f", gift.price}".white
+            puts "Quantity: #{gift.quantity}".magenta
+            puts "Status: #{gift.status}".white
         end
         total = list.gifts.sum {|gift| gift.price * gift.quantity }
         puts
-        puts "Total Cost: $#{sprintf "%.2f", total}"
+        puts "Total Cost: $#{sprintf "%.2f", total}".bold.italic.light_magenta.on_white 
         prompt = TTY::Prompt.new
         input =prompt.select("") do |option|
-            option.choice "back to friend's lists"
+            option.choice "back to friend's lists".magenta
             option.choice "back to profile page".italic.white
         end
-        if input == "back to profile page".italic.white
+        if input == "back to profile page".italic.light_magenta
             self.profile_page
-        elsif input == "back to friend's lists"
+        elsif input == "back to friend's lists".magenta
             self.friend_menu
         end
     end

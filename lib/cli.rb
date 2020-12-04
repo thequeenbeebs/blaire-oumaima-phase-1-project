@@ -12,7 +12,8 @@ class CLI
         puts 
         puts "                           the holidays just got a bit easier.                                    ".bold.red.on_white
         puts
-        input = prompt.select("let's get started!".bold.red.on_white) do |option|
+        puts 
+        input = prompt.select("     let's get started!      ".bold.red.on_white) do |option|
              
             option.choice "sign in".light_cyan
             option.choice "create new account".light_cyan
@@ -33,7 +34,7 @@ class CLI
         puts 
         puts "Welcome Back! 😊".italic.white 
         puts 
-        puts "what's your username?".magenta
+        puts "                          what's your username?                           ".italic.white.on_red
         username = gets.chomp
         user = User.find_by(username: username)
         if user == nil
@@ -58,14 +59,15 @@ class CLI
         puts
         puts "create an account here!".red
         puts
-        puts "what would you like your username to be?".italic.white
+        puts "                          what would you like your username to be?                         ".italic.white.on_red
         username = gets.chomp
         user = User.find_by(username: username)
         if user == nil
             user = User.create(username: username)
             user.profile_page
         else
-            puts "this username already exists. please choose a different username.".yellow
+            puts 
+            puts "this username already exists. please choose a different username".yellow
             self.sign_up
         end
     end
