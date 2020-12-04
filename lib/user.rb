@@ -84,11 +84,7 @@ class User < ActiveRecord::Base
         puts list.name.bold
         puts "#{list.shopping_or_wish} List".italic
         list.gifts.each do |gift|
-            puts
-            puts "Name: #{gift.name}".magenta 
-            puts "Price: $#{sprintf "%.2f", gift.price}"
-            puts "Quantity: #{gift.quantity}".magenta 
-            puts "Status: #{gift.status}"
+            self.gift_format(gift)
         end
         total = list.gifts.sum {|gift| gift.price * gift.quantity }
         puts
@@ -99,7 +95,6 @@ class User < ActiveRecord::Base
             option.choice "edit gift"
             option.choice "delete list"
             option.choice "back to profile page".italic
-            #share list?
         end
         if input == "add a gift"
             list.add_gift
@@ -110,6 +105,14 @@ class User < ActiveRecord::Base
         elsif input == "back to profile page".italic
             self.profile_page
         end
+    end
+
+    def gift_format(gift)
+        puts
+        puts "Name: #{gift.name}".magenta 
+        puts "Price: $#{sprintf "%.2f", gift.price}"
+        puts "Quantity: #{gift.quantity}".magenta 
+        puts "Status: #{gift.status}"
     end
 
     # FRIEND LIST METHODS
@@ -162,20 +165,14 @@ class User < ActiveRecord::Base
             Follow.create(follower_id: self.id, followee_id: friend.id)
             puts "#{friend.username} is now your friend!".cyan
         end
+
+        # bottom menu selection
         input = prompt.select("") do |option|
             option.choice "add friend"
             option.choice "back to friend's lists"
             option.choice "back to profile page"
         end
-        if input == "add friend"
-            self.add_friend
-        elsif input == "back to friend's lists"
-            user = User.find(self.id)
-            user.friend_menu
-        elsif input == "back to profile page"
-            user = User.find(self.id)
-            user.profile_page
-        end
+        self.menu_methods(input)
     end
 
     def remove_friend
@@ -186,19 +183,17 @@ class User < ActiveRecord::Base
                 option.choice friend.username
             end
         end
-        remove = User.find_by(username: input)
-        remove.destroy
+        friend = User.find_by(username: input)
+        joiner = Follow.find_by(followee_id: friend.id, follower_id: self.id)
+        joiner.destroy
         puts "you have removed #{input}."
+
+        # bottom menu selection
         input =prompt.select("") do |option|
             option.choice "back to friend's lists"
             option.choice "back to profile page"
         end
-        if input == "back to profile page"
-            self.profile_page
-        elsif input == "back to friend's lists"
-            user = User.find(self.id)
-            user.friend_menu
-        end
+        self.menu_methods(input)
     end
 
     def friend_list_menu(friend)
@@ -227,11 +222,7 @@ class User < ActiveRecord::Base
         puts list.name.bold
         puts "#{list.shopping_or_wish} list".italic
         list.gifts.each do |gift|
-            puts
-            puts "Name: #{gift.name}"
-            puts "Price: $#{sprintf "%.2f", gift.price}"
-            puts "Quantity: #{gift.quantity}"
-            puts "Status: #{gift.status}"
+            self.gift_format(gift)
         end
         total = list.gifts.sum {|gift| gift.price * gift.quantity }
         puts
@@ -239,12 +230,21 @@ class User < ActiveRecord::Base
         prompt = TTY::Prompt.new
         input =prompt.select("") do |option|
             option.choice "back to friend's lists"
-            option.choice "back to profile page".italic.white
+            option.choice "back to profile page"
         end
-        if input == "back to profile page".italic.white
-            self.profile_page
+        self.menu_methods(input)
+    end
+
+    #instructions on where to go in app based on TTY prompt input
+    def menu_methods(input)
+        if input == "add friend"
+            self.add_friend
         elsif input == "back to friend's lists"
-            self.friend_menu
+            user = User.find(self.id)
+            user.friend_menu
+        elsif input == "back to profile page"
+            user = User.find(self.id)
+            user.profile_page
         end
     end
 
