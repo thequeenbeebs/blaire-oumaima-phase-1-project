@@ -31,7 +31,7 @@ class CLI
     def self.sign_in
         prompt = TTY::Prompt.new
         puts 
-        puts "Welcome Back!".italic.white 
+        puts "Welcome Back! 😊".italic.white 
         puts 
         puts "what's your username?".magenta
         username = gets.chomp
