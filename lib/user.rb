@@ -5,8 +5,6 @@ class User < ActiveRecord::Base
     has_many :following_users, foreign_key: :followee_id, class_name: 'Follow'
     has_many :users_following_me, through: :following_users
 
-
-
     def profile_page
         prompt = TTY::Prompt.new
         puts
