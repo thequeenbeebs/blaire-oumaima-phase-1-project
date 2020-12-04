@@ -159,7 +159,7 @@ class User < ActiveRecord::Base
             puts
             puts "You cannot be friends with yourself!"
         else
-            Follow.create(follower_id: friend.id, followee_id: self.id)
+            Follow.create(follower_id: self.id, followee_id: friend.id)
             puts "#{friend.username} is now your friend!"
         end
         input = prompt.select("") do |option|
@@ -180,7 +180,7 @@ class User < ActiveRecord::Base
 
     def remove_friend
         prompt = TTY::Prompt.new
-        input = prompt.select("Which friend do you want to remove?") do
+        input = prompt.select("Which friend do you want to remove?") do |option|
             self.followed_users.each do |follow|
                 friend = User.find(follow.followee_id)
                 option.choice friend.username
@@ -196,7 +196,8 @@ class User < ActiveRecord::Base
         if input == "Back to Profile Page"
             self.profile_page
         elsif input == "Back to Friend's Lists"
-            self.friend_menu
+            user = User.find(self.id)
+            user.friend_menu
         end
     end
 
