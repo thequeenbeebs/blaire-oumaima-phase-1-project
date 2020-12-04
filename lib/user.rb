@@ -239,7 +239,7 @@ class User < ActiveRecord::Base
         prompt = TTY::Prompt.new
         input =prompt.select("") do |option|
             option.choice "back to friend's lists"
-            option.choice "back to profile page"
+            option.choice "back to profile page".italic.white
         end
         if input == "back to profile page".italic.white
             self.profile_page
